@@ -54,13 +54,12 @@ If no .rvmrc file is found, the default ruby is used insted."
     (if rvmrc-ruby (rvm-use rvmrc-ruby)
       (rvm-use-default))))
 
-(defun rvm-use (new-ruby)
+(defun rvm-use ()
   "switch the current ruby version to any ruby, which is installed with rvm"
-  (interactive (list (ido-completing-read "Ruby Version: " (rvm/list))))
-  (let* (;; (new-ruby-binary (assoc "ruby" (rvm/info new-ruby)))
-         (new-ruby-binary (rvm--ruby-binary-path new-ruby)))
-    (rvm--set-ruby new-ruby-binary))
-  (message (concat "current Ruby: " new-ruby)))
+  (interactive)
+  (let ((new-ruby (completing-read "Ruby Version: " (rvm/list))))
+    (rvm--set-ruby (rvm--ruby-binary-path new-ruby))
+    (message (concat "current Ruby: " new-ruby))))
 
 ;; TODO: take buffer switching into account
 (defun rvm-autodetect-ruby ()
