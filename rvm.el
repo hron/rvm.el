@@ -146,4 +146,13 @@ If no .rvmrc file is found, the default ruby is used insted."
           output
         (message output)))))
 
+(eval-after-load "esh-util"
+  '(progn
+     (defun eshell/rvm (&rest args)
+       (let ((command (car args))
+	     (options (cdr args)))
+	 (if (string= "use" command)
+	     (apply 'rvm-use options)
+	   (apply 'rvm--call-process args))))))
+
 (provide 'rvm)
